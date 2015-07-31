@@ -11,8 +11,8 @@ Run as:
     git clone https://github.com/shishkander/go-channel-benchmark.git
     cd go-channel-benchmark
     # To vary parameters, do:
-    # $TEXTEDITOR experimental.go
-    go run experimental.go
+    # $TEXTEDITOR main.go
+    go run main.go
 
 ### How to read result tables
 
