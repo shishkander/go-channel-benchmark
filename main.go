@@ -52,7 +52,7 @@ func main() {
 	Ts := []int{0, 10, 50, 100, 150, 250, 400, 800}
 	Ps := []int{1, 4, 8, 16}
 	//MaxProcs := []int{4, 3, 2, 1}
-	MaxProcs := []int{2, 1}
+	MaxProcs := []int{4, 2, 1}
 
 	tabTable := "        " // 8 spaces.
 	printDivider := func() {
