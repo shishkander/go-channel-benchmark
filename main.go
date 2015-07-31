@@ -48,21 +48,24 @@ func makeBenchmarkFunc(p, s, t int) func(b *testing.B) {
 }
 
 func main() {
-	//Ss := []int{0, 1000, 1050, 1100, 1200}
-	Ss := []int{0, 50, 100, 150, 250, 400, 800}
-	Ps := []int{1, 2, 3}
-	CPUs := []int{4, 3, 2, 1}
+	Ss := []int{0, 10, 50, 100, 500, 1000, 1500, 5000}
+	Ts := []int{0, 10, 50, 100, 150, 250, 400, 800}
+	Ps := []int{1, 4, 8, 16}
+	//MaxProcs := []int{4, 3, 2, 1}
+	MaxProcs := []int{2, 1}
+
+	tabTable := "        " // 8 spaces.
 	printDivider := func() {
-		fmt.Print("|")
-		for i := 1; i < 13+len(Ss)*8-1; i++ {
+		fmt.Print(tabTable + "|")
+		for i := 1; i < 13+len(Ts)*8-1; i++ {
 			fmt.Print("=")
 		}
 		fmt.Println("|")
 	}
 	printHeader := func(p int) {
 		printDivider()
-		fmt.Printf("| %9s |", "buf\\tasks")
-		for _, t := range Ss {
+		fmt.Printf(tabTable+"| %9s |", "buf\\tasks")
+		for _, t := range Ts {
 			if t == 0 {
 				fmt.Printf(" %5s |", "none")
 			} else {
@@ -72,18 +75,18 @@ func main() {
 		fmt.Println()
 		printDivider()
 	}
-	for _, c := range CPUs {
+	for _, c := range MaxProcs {
 		runtime.GOMAXPROCS(c)
 		for _, p := range Ps {
 			fmt.Printf("\n### GOMAXPROCS = %02d, Producers = %02d, Consumers = %02d\n\n", c, 1, p)
 			printHeader(p)
 			for _, s := range Ss {
 				if s == 0 {
-					fmt.Printf("| %5s     |", "unbuf")
+					fmt.Printf(tabTable+"| %5s     |", "unbuf")
 				} else {
-					fmt.Printf("| %5d     |", s)
+					fmt.Printf(tabTable+"| %5d     |", s)
 				}
-				for _, t := range Ss {
+				for _, t := range Ts {
 					r := testing.Benchmark(makeBenchmarkFunc(p, s, t))
 					sp := r.T.Seconds() / float64(r.N)
 					if t > 0 {
